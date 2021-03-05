@@ -1,0 +1,134 @@
+---
+title: "ds202_lab3"
+author: "Tyren Teav"
+date: "3/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Problem 1
+
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+install.packages('readxl')
+data <- readxl::read_excel('/Users/Tyren/Desktop/DS_202/GSS.xls')
+data
+
+data <- data %>% rename('year' = 'Gss year for this respondent', 'id' = `Respondent id number`, 'labor_status' = `Labor force status`, 'work_hours' = `Number of hours usually work a week`, marital_status = `Marital status`, 'years_of_school' = `Highest year of school completed`, 'political_party' = `Political party affiliation`, 'happiness' = `General happiness`, 'ballot' = `Ballot used for interview`)
+
+unique(data$years_of_school)
+years <- as.numeric(data$years_of_school)
+data$years = years
+
+data %>%
+  group_by(marital_status) %>%
+    summarize(
+      year_avg = mean(years, na.rm = TRUE)) %>%
+    arrange(year_avg)
+   
+```
+
+The people who were never married had the highest average of years of school completed. There is no other real pattern, those who were widowed had the lowest average next to those who were separated. 
+
+Problem 2
+
+```{r}
+
+widow <- data.frame(data[data$marital_status %in% c('Widowed'), ])
+widow1 <- na.omit(widow)
+wavg <- mean(widow1$years)
+widow2 <- widow1[!widow1$years < wavg, ]
+
+sep <- data.frame(data[data$marital_status %in% c('Separated'), ])
+sep1 <- na.omit(sep)
+savg <- mean(sep1$years)
+sep2 <- sep1[!sep1$years < savg, ]
+
+mar <- data.frame(data[data$marital_status %in% c('Married'), ])
+mar1 <- na.omit(mar)
+mavg <- mean(mar1$years)
+mar2 <- mar1[!mar1$years < mavg, ]
+
+div <- data.frame(data[data$marital_status %in% c('Divorced'), ])
+div1 <- na.omit(div)
+davg <- mean(div1$years)
+div2 <- div1[!div1$years < davg, ]
+
+nmar <- data.frame(data[data$marital_status %in% c('Never married'), ])
+nmar1 <- na.omit(nmar)
+nmavg <- mean(nmar1$years)
+nmar2 <- nmar1[!nmar1$years < nmavg, ]
+
+na <- data.frame(data[data$marital_status %in% c('No answer'), ])
+na1 <- na.omit(na)
+naavg <- mean(na1$years)
+na2 <- na1[!na1$years < naavg, ]
+
+educ <- rbind(widow2, sep2, mar2, div2, nmar2, na2)
+educ
+
+```
+
+Problem 6
+
+We will be looking at the relationship between labor status and happiness. I gave a numeric value to the happiness levels, 1 to 3, from not too happy to very happy. Then I will be taking the average to see the happiness levels of different labor statuses.The happiest were keeping the house and the unhappiest were those who were laid off or unemployed.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+unique(data$happiness)
+
+happynum <- as.numeric(data$happiness)
+
+happynum = ifelse(data$happiness %in% c('Very happy'), 3, happynum)
+happynum = ifelse(data$happiness %in% c('Pretty happy'), 2, happynum)
+happynum = ifelse(data$happiness %in% c('Not too happy'), 1, happynum)
+data$happynum = happynum
+
+
+data %>% 
+  group_by(labor_status) %>%
+  summarize(
+    avg_happy = mean(happynum, na.rm = TRUE)) %>%
+      arrange(avg_happy)
+
+happy1 <- data.frame(data[data$happynum %in% c(1), ])
+happy2 <- data.frame(data[data$happynum %in% c(2), ])
+happy3 <- data.frame(data[data$happynum %in% c(3), ])
+
+happys <- rbind(data.frame(fill = 'Not too happy', hp = happy1),
+                 data.frame(fill = 'Pretty happy', hp = happy2),
+                 data.frame(fill = 'Very happy', hp = happy3))
+
+ggplot(happys, aes(x=hp.labor_status, fill=fill)) + geom_bar(position = 'dodge') + coord_flip()
+
+```
+
+Problem 6 pt.2
+
+We will look at years of school vs the year the survey was taken, see if the time had any affect on how much school was completed. The average of the education increased overall over the years. There are little dips, but an obvious increasing trend. It seems that the max amount did not change much, but the minimum amount increased, thus increasing the average.
+
+```{r}
+
+b <- data %>%
+  group_by(year) %>%
+  summarize(
+  avg = mean(years, na.rm = TRUE)) %>%
+  arrange(avg)
+
+avg = b$avg
+
+ggplot(data, aes(x=year, y=years)) + geom_point(position = 'jitter')
+
+ggplot(b, aes(x=year, y=avg)) + geom_point(position = 'jitter')
+
+
+
+```
+
