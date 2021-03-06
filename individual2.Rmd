@@ -1,0 +1,58 @@
+---
+title: "ds202_lab3"
+author: "Rithwik Gokhale"
+date: "3/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+install.packages('readxl')
+data <- readxl::read_excel('/Users/rithw/Desktop/School work/DS 202/ds202_lab3/GSS.xls')
+data
+```
+
+Question 3
+```{r}
+happy <- filter(data, `General happiness` == "Pretty happy" | `General happiness` == "Very Happy")
+ggplot(happy, aes(x = `Marital status`)) + geom_histogram(stat = "count")
+data %>% 
+  select(`General happiness`, `Marital status`) %>%
+    group_by(`Marital status`) %>%
+      count(`General happiness`)
+```
+
+We can see from the graphs above that people who are married tend to be happier than people who are widowed or those with failed relationships. The second happiest people are those who never married, followed by those that are divorced. The least happiest people are the ones who are separated.
+
+Question 4
+
+```{r}
+ggplot(data, aes(x = `Marital status`)) + geom_bar() + facet_wrap(~`Political party affiliation`) + coord_flip()
+df <- data %>%
+  select(`General happiness`, `Political party affiliation`, `Marital status`) %>%
+    group_by(`Political party affiliation`, `Marital status`) %>%
+      count(`General happiness`)
+df
+```
+
+From the above we can see that political affiliation doesn't affect the relationship found in question three. This is because the distribution of happy couples is relatively proportional across all party affiliations. In every party, married couples are the happiest by far, and separated are the least.
+
+#Question 5 
+
+How is marital status related to the education of a respondent? What are possible reasons accounting for the patterns you see?
+
+
+```{r}
+ggplot(data, aes(x=`Marital status`))+ 
+  geom_bar() +
+  facet_wrap(~ `Highest year of school completed`)+
+  coord_flip()
+```
+
+It is quite interesting that there exists a pattern for the years of education through the groups by marital status. As we can see, group of married tends have more frequencies than the never married group. So, the education frequencies goes by group married > never married > divorced > widowed. There are not much of data of groups of separated, so it is hard to tell the relationship between the level of education and it. 
+Looking at the facet wrap, we can conclude that the more educated the person is, the better his/her marriage life is. 
