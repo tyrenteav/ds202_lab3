@@ -36,6 +36,8 @@ data %>%
 
 The people who were never married had the highest average of years of school completed. There is no other real pattern, those who were widowed had the lowest average next to those who were separated. 
 
+# Comment from rgokhale - The graphs which are used here can easily show the comparision between the level of education and the level of happiness. 
+
 Problem 2
 
 ```{r}
@@ -75,6 +77,8 @@ educ
 
 ```
 
+# comment from rgokhale - this code is very easy to understand and the information being displayed from the code can be used to draw straightforward conclusions
+
 Problem 6
 
 We will be looking at the relationship between labor status and happiness. I gave a numeric value to the happiness levels, 1 to 3, from not too happy to very happy. Then I will be taking the average to see the happiness levels of different labor statuses.The happiest were keeping the house and the unhappiest were those who were laid off or unemployed.
@@ -113,6 +117,8 @@ ggplot(happys, aes(x=hp.labor_status, fill=fill)) + geom_bar(position = 'dodge')
 Problem 6 pt.2
 
 We will look at years of school vs the year the survey was taken, see if the time had any affect on how much school was completed. The average of the education increased overall over the years. There are little dips, but an obvious increasing trend. It seems that the max amount did not change much, but the minimum amount increased, thus increasing the average.
+
+# comment from rgokhale - the summary provided above connects with the data displayed from the graphs. Tyren has used easy to understand code
 
 ```{r}
 

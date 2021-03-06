@@ -27,7 +27,9 @@ data %>%
       count(`General happiness`)
 ```
 
-We can see from the graphs above that people who are married tend to be happier than people who are widowed or those with failed relationships. The second happiest people are those who never married, followed by those that are divorced. The least happiest people are the ones who are separated.
+
+
+We can see from the above graohs that people who are married seem to be happier than people who are widowed or have not married or chosen to remain single. The second happiest group are the not married and third is the divorced group. The least happy from the graphs are the people who have separated.
 
 Question 4
 
@@ -40,7 +42,9 @@ df <- data %>%
 df
 ```
 
-From the above we can see that political affiliation doesn't affect the relationship found in question three. This is because the distribution of happy couples is relatively proportional across all party affiliations. In every party, married couples are the happiest by far, and separated are the least.
+
+
+The above information shows that political affiliation does not have an effect on the relationship found in question 3. This is because the distribution of the happy couples is pretty much proportional across the different political parties. Again, regardless of the political parties, the married people are the happiest and the separated are the least happy. 
 
 #Question 5 
 
